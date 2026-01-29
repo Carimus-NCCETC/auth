@@ -3,7 +3,7 @@ namespace FzyAuth;
 use FzyAuth\Entity\Base\UserInterface;
 use FzyAuth\Service\Password\Forgot;
 use FzyAuth\Util\Acl\Resource;
-use ZfcUser\Controller\UserController;
+use LmcUser\Controller\UserController;
 
 return array(
     'router' => array(
@@ -84,17 +84,8 @@ return array(
     ),
 	'service_manager' => array(
 		'invokables' => array(
-			'FzyAuth\Listener\Route' => 'FzyAuth\Listener\Route',
-			'FzyAuth\Listener\Register' => 'FzyAuth\Listener\Register',
-			'FzyAuth\Listener\DispatchError' => 'FzyAuth\Listener\DispatchError',
-			'FzyAuth\Service\Acl' => 'FzyAuth\Service\Acl',
-            'FzyAuth\Service\ApiRequestDetector' => 'FzyAuth\Service\ApiRequestDetector',
+			// FzyAuth\Factory\Acl doesn't extend Base, keeps as invokable
             'FzyAuth\Factory\Acl' => 'FzyAuth\Factory\Acl',
-            'FzyAuth\Service\AclEnforcer\Web' => 'FzyAuth\Service\AclEnforcer\Web',
-            'FzyAuth\Service\AclEnforcer\Api' => 'FzyAuth\Service\AclEnforcer\Api',
-            'FzyAuth\Service\Password\Forgot' => 'FzyAuth\Service\Password\Forgot',
-            'FzyAuth\Service\Password\Reset'  => 'FzyAuth\Service\Password\Reset',
-
         ),
         'aliases' => array(
             'FzyAuth\Password\Forgot' => 'FzyAuth\Service\Password\Forgot',
@@ -109,13 +100,13 @@ return array(
 			'FzyAuth\AclEnforcerFactory' => function($sm) {
                 /* @var $detector \FzyAuth\Service\ApiRequestDetector */
                 $detector = $sm->get('FzyAuth\Service\ApiRequestDetector');
-				/* @var $application \Zend\Mvc\Application */
+				/* @var $application \Laminas\Mvc\Application */
 				return $sm->get($detector->isApiRequest($sm->get('Application')->getMvcEvent()) ? 'FzyAuth\Service\AclEnforcer\Api' : 'FzyAuth\Service\AclEnforcer\Web');
 			},
 			/**
 			 * Factory method for instantiating the configuration specified factory, running it
 			 * on the ACL configuration and returning an ACL object.
-			 * @return \Zend\Permissions\Acl\Acl
+			 * @return \Laminas\Permissions\Acl\Acl
 			 */
 			'FzyAuth\Acl' => function($sm) {
 				/* @var $moduleConfig \FzyCommon\Util\Params */
@@ -139,34 +130,34 @@ return array(
 			 * @return \FzyAuth\Entity\Base\UserInterface
 			 */
 			'FzyAuth\CurrentUser' => function($sm) {
-				$zfcAuth = $sm->get('zfcuser_auth_service');
-				if ($zfcAuth->hasIdentity()) {
-					return $zfcAuth->getIdentity();
+				$lmcAuth = $sm->get('lmcuser_auth_service');
+				if ($lmcAuth->hasIdentity()) {
+					return $lmcAuth->getIdentity();
 				}
                 return $sm->get('FzyAuth\NullUser');
 			},
             /**
              * Returns a class that implements ZF2's Transport interface
-             * @return \Zend\Mail\Transport\TransportInterface
+             * @return \Laminas\Mail\Transport\TransportInterface
              */
             'FzyAuth\Mail\Transport' => function($sm) {
                 return $sm->get('SlmMail\Mail\Transport\SesTransport');
             },
 
             'FzyAuth\Form\ForgotPassword' => function($sm){
-                $options = $sm->get('zfcuser_module_options');
+                $options = $sm->get('lmcuser_module_options');
                 $form = new \FzyAuth\Form\ForgotPassword(null, $options);
                 return $form->setInputFilter(new \FzyAuth\Form\ForgotPasswordFilter($options));
             },
             'FzyAuth\Form\ChangePassword' => function($sm){
-                $options = $sm->get('zfcuser_module_options');
+                $options = $sm->get('lmcuser_module_options');
                 $form = new \FzyAuth\Form\ChangePassword(null, $options);
                 return $form->setInputFilter(new \FzyAuth\Form\ChangePasswordFilter($options));
             },
 		),
 	),
     'view_helpers' => array(
-        'invokables' => array(
+        'aliases' => array(
             'fzyAllowed' => 'FzyAuth\View\Helper\Allowed',
         ),
     ),
@@ -253,12 +244,10 @@ return array(
 		),
 	),
 	/**
-	 * Override zfcuser settings
+	 * Override lmcuser settings with our custom entity user class
 	 */
-	'zfcuser' => array(
-		// telling ZfcUser to use our own class
+	'lmcuser' => array(
 		'user_entity_class'       => 'FzyAuth\Entity\Base\User',
-		// telling ZfcUserDoctrineORM to skip the entities it defines
 		'enable_default_entities' => false,
 		'enable_username' => true,
 	),

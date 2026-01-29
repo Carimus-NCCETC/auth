@@ -3,8 +3,8 @@ namespace FzyAuth\Service\AclEnforcer;
 
 use FzyAuth\Service\Acl;
 use FzyAuth\Service\AclEnforcerInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\ModelInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ModelInterface;
 
 abstract class Base extends \FzyAuth\Service\Base implements AclEnforcerInterface
 {
@@ -38,7 +38,7 @@ abstract class Base extends \FzyAuth\Service\Base implements AclEnforcerInterfac
     }
 
     /**
-     * @return \Zend\Permissions\Acl\Acl
+     * @return \Laminas\Permissions\Acl\Acl
      */
     public function getAcl()
     {
@@ -114,7 +114,7 @@ abstract class Base extends \FzyAuth\Service\Base implements AclEnforcerInterfac
      * @param array    $routeParams
      * @param array    $routeOptions
      *
-     * @return \Zend\Stdlib\ResponseInterface
+     * @return \Laminas\Stdlib\ResponseInterface
      */
     public function redirectTo(MvcEvent $e, $routeName, $routeParams = array(), $routeOptions = array())
     {
@@ -122,16 +122,16 @@ abstract class Base extends \FzyAuth\Service\Base implements AclEnforcerInterfac
         $url = $this->url()->fromRoute($routeName, $routeParams, $routeOptions);
         $response->getHeaders()->addHeaderLine('Location', $url);
 
-        return $this->triggerStatus($e, \Zend\Http\Response::STATUS_CODE_302);
+        return $this->triggerStatus($e, \Laminas\Http\Response::STATUS_CODE_302);
     }
 
     /**
      * @param MvcEvent $e
      * @param int      $status
      *
-     * @return \Zend\Stdlib\ResponseInterface
+     * @return \Laminas\Stdlib\ResponseInterface
      */
-    public function triggerStatus(MvcEvent $e, $status = \Zend\Http\Response::STATUS_CODE_404)
+    public function triggerStatus(MvcEvent $e, $status = \Laminas\Http\Response::STATUS_CODE_404)
     {
         $response = $e->getResponse();
         $response->setStatusCode($status);

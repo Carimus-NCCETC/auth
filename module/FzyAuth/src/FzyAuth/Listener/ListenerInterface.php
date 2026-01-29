@@ -1,7 +1,7 @@
 <?php
 namespace FzyAuth\Listener;
 
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 interface ListenerInterface
 {

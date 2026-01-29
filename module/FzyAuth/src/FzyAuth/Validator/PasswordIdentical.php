@@ -7,7 +7,7 @@
  */
 namespace FzyAuth\Validator;
 
-use Zend\Validator\Identical;
+use Laminas\Validator\Identical;
 
 class  PasswordIdentical extends Identical
 {

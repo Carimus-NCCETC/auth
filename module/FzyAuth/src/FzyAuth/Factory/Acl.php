@@ -3,23 +3,23 @@ namespace FzyAuth\Factory;
 
 use FzyAuth\Util\Acl\Resource as AclResource;
 use FzyCommon\Util\Params;
-use Zend\Permissions\Acl\Acl as ZendAcl;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Permissions\Acl\Acl as LaminasAcl;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class Acl
 {
     /**
      * @param Params $roleConfig
      *
-     * @return ZendAcl
+     * @return LaminasAcl
      */
     public function createAcl(Params $roleConfig, ServiceLocatorInterface $sm)
     {
-        $acl = new ZendAcl();
+        $acl = new LaminasAcl();
         // add all roles from config
         foreach ($roleConfig->get('roles', array()) as $roleName => $roleData) {
             $roleMap = Params::create($roleData);
-            $role = new \Zend\Permissions\Acl\Role\GenericRole($roleName);
+            $role = new \Laminas\Permissions\Acl\Role\GenericRole($roleName);
             $acl->addRole($role, $roleMap->get('inherits', array()));
             // add resources from config
             foreach ($roleMap->get('allow', array()) as $resourceData) {
@@ -41,7 +41,7 @@ class Acl
      * @param $resource
      * @param $privileges
      */
-    protected function addAllowedResource(ZendAcl $acl, $role, AclResource $resource)
+    protected function addAllowedResource(LaminasAcl $acl, $role, AclResource $resource)
     {
         $this->addAclResource($acl, $resource);
         $acl->allow($role, $resource->getResource(), $resource->getPrivileges());
@@ -55,7 +55,7 @@ class Acl
      * @param $resource
      * @param $privileges
      */
-    protected function addDeniedResource(ZendAcl $acl, $role, AclResource $resource)
+    protected function addDeniedResource(LaminasAcl $acl, $role, AclResource $resource)
     {
         $this->addAclResource($acl, $resource);
         $acl->deny($role, $resource->getResource(), $resource->getPrivileges());
@@ -67,10 +67,10 @@ class Acl
      * @param Acl $acl
      * @param $resource
      */
-    protected function addAclResource(ZendAcl $acl, AclResource $resource)
+    protected function addAclResource(LaminasAcl $acl, AclResource $resource)
     {
         if (!$acl->hasResource($resource->getResource())) {
-            $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource->getResource()));
+            $acl->addResource(new \Laminas\Permissions\Acl\Resource\GenericResource($resource->getResource()));
         }
 
         return $this;

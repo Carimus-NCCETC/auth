@@ -39,7 +39,7 @@ class Allowed extends Base
      */
     public function toResource($resource, $privilege = null)
     {
-        /* @var $acl \Zend\Permissions\Acl\Acl */
+        /* @var $acl \Laminas\Permissions\Acl\Acl */
         $acl = $this->getService('FzyAuth\Acl');
         /* @var $user \FzyAuth\Entity\Base\UserInterface */
         $user = $this->getService('FzyAuth\CurrentUser');

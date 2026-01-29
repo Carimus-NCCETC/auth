@@ -7,10 +7,10 @@ use FzyAuth\Exception\Password\NotSent;
 use FzyAuth\Service\Password;
 use FzyCommon\Util\Params;
 use Ramsey\Uuid\Uuid;
-use Zend\Mail\Transport\TransportInterface;
-use Zend\Mail\Message;
-use Zend\Mime\Part as MimePart;
-use Zend\Mime\Message as MimeMessage;
+use Laminas\Mail\Transport\TransportInterface;
+use Laminas\Mail\Message;
+use Laminas\Mime\Part as MimePart;
+use Laminas\Mime\Message as MimeMessage;
 
 /**
  * Class Forgot

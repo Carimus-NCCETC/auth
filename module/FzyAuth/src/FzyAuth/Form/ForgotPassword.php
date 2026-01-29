@@ -2,9 +2,9 @@
 
 namespace FzyAuth\Form;
 
-use Zend\Form\Element;
-use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\AuthenticationOptionsInterface;
+use Laminas\Form\Element;
+use LmcUser\Form\ProvidesEventsForm;
+use LmcUser\Options\AuthenticationOptionsInterface;
 
 class ForgotPassword extends ProvidesEventsForm
 {

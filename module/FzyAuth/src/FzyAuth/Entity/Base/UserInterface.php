@@ -2,9 +2,9 @@
 namespace FzyAuth\Entity\Base;
 
 use FzyCommon\Entity\BaseInterface;
-use ZfcUser\Entity\UserInterface as ZfcUserInterface;
+use LmcUser\Entity\UserInterface as LmcUserInterface;
 
-interface UserInterface extends BaseInterface, ZfcUserInterface
+interface UserInterface extends BaseInterface, LmcUserInterface
 {
     const STATE_ACTIVE   = 'active';
     const STATE_INACTIVE = 'inactive';

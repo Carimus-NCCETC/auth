@@ -4,10 +4,10 @@ namespace FzyAuth\Controller;
 
 use FzyAuth\Exception\Password\NotSent;
 use FzyCommon\Controller\AbstractController;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 use FzyCommon\Util\Params;
-use Zend\Form\Form;
-use ZfcUser\Controller\UserController;
+use Laminas\Form\Form;
+use LmcUser\Controller\UserController;
 
 /**
  * Class PasswordController
@@ -25,7 +25,7 @@ class PasswordController extends AbstractController
         ));
     }
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Laminas\Http\Response|ViewModel
      */
     public function forgotAction()
     {
@@ -64,7 +64,7 @@ class PasswordController extends AbstractController
      * @param  Params                          $params
      * @param  Form                            $form
      * @param  \FzyAuth\Service\Password\Reset $reset
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Laminas\Http\Response|ViewModel
      */
     protected function preReset(Params $params, Form $form, \FzyAuth\Service\Password\Reset $reset)
     {
@@ -86,7 +86,7 @@ class PasswordController extends AbstractController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Laminas\Http\Response|ViewModel
      */
     public function changeAction()
     {

@@ -9,8 +9,8 @@
 
 namespace FzyAuth;
 
-use Zend\EventManager\EventInterface;
-use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Laminas\EventManager\EventInterface;
+use Laminas\ModuleManager\Feature\BootstrapListenerInterface;
 
 /**
  * Class Module
@@ -32,10 +32,10 @@ class Module implements BootstrapListenerInterface
     public function getAutoloaderConfig()
     {
 	    return array(
-		    'Zend\Loader\ClassMapAutoloader' => array(
+		    'Laminas\Loader\ClassMapAutoloader' => array(
 			    __DIR__ . '/autoload_classmap.php',
 		    ),
-		    'Zend\Loader\StandardAutoloader' => array(
+		    'Laminas\Loader\StandardAutoloader' => array(
 			    'namespaces' => array(
 				    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
 			    ),
@@ -51,8 +51,8 @@ class Module implements BootstrapListenerInterface
 	 * @return array
 	 */
 	public function onBootstrap( EventInterface $e ) {
-		/* @var $e \Zend\Mvc\MvcEvent */
-		/* @var $sm \Zend\ServiceManager\ServiceLocatorInterface */
+		/* @var $e \Laminas\Mvc\MvcEvent */
+		/* @var $sm \Laminas\ServiceManager\ServiceLocatorInterface */
 		$sm = $e->getApplication()->getServiceManager();
 		// enforce ACL on route requests
 		$sm->get('FzyAuth\Listener\Route')->latch($e);

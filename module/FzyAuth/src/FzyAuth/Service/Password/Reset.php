@@ -3,9 +3,8 @@ namespace FzyAuth\Service\Password;
 
 use FzyAuth\Entity\Base\UserInterface;
 use FzyAuth\Service\Password;
-use Zend\Crypt\Password\Bcrypt;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
 
 /**
  * Class Reset
@@ -31,10 +30,8 @@ class Reset extends Password implements EventManagerAwareInterface
 
     protected function changePassword(UserInterface $user, $password)
     {
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->getModuleConfig()->get('password_cost', 14));
-
-        $pass = $bcrypt->create($password);
+        $cost = $this->getModuleConfig()->get('password_cost', 14);
+        $pass = password_hash($password, PASSWORD_BCRYPT, ['cost' => $cost]);
         $user->setPassword($pass);
         $user->setPasswordToken(null);
         // trigger event to allow password reset hooks

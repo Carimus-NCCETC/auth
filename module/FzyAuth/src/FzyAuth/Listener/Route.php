@@ -2,8 +2,8 @@
 namespace FzyAuth\Listener;
 
 use FzyAuth\Service\AclEnforcerInterface;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\MvcEvent;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\MvcEvent;
 
 class Route extends Base
 {
@@ -16,7 +16,7 @@ class Route extends Base
 
     public function checkAcl(MvcEvent $e)
     {
-        if (!$e->getRequest() instanceof \Zend\Http\Request) {
+        if (!$e->getRequest() instanceof \Laminas\Http\Request) {
             return;
         }
         $route = $e->getRouteMatch()->getMatchedRouteName();

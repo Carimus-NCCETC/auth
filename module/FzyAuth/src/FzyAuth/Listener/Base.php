@@ -1,10 +1,10 @@
 <?php
 namespace FzyAuth\Listener;
 
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\Mvc\MvcEvent;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\MvcEvent;
 use FzyAuth\Service\Base as BaseService;
 
 abstract class Base extends BaseService implements ListenerInterface, EventManagerAwareInterface
@@ -77,6 +77,6 @@ abstract class Base extends BaseService implements ListenerInterface, EventManag
 
     protected function latchTo($mvcEvent, $callback, $priority = 1)
     {
-        $this->getEventManager()->getSharedManager()->attach('Zend\Mvc\Application', $mvcEvent, $callback, $priority);
+        $this->getEventManager()->getSharedManager()->attach('Laminas\Mvc\Application', $mvcEvent, $callback, $priority);
     }
 }

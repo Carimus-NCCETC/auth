@@ -2,7 +2,7 @@
 
 namespace FzyAuth\Service;
 
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 class ApiRequestDetector extends Base
 {

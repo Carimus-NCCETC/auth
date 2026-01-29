@@ -1,10 +1,10 @@
 <?php
-/* @var $form \Zend\Form\Form */
+/* @var $form \Laminas\Form\Form */
     $form = $this->forgotForm;
     $form->prepare();
     $form->setAttribute('action', $this->url('fzyauth-password/forgot/post'));
     $form->setAttribute('method', 'post');
-/* @var $element \Zend\Form\Element */
+/* @var $element \Laminas\Form\Element */
     $element = $form->get('email');
 ?>
 

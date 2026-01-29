@@ -3,7 +3,7 @@ namespace FzyAuth\Entity\Base;
 
 use FzyCommon\Entity\Base as Entity;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
  * @ORM\MappedSuperclass
@@ -18,7 +18,7 @@ abstract class AbstractUser extends Entity implements UserInterface
     /**
      * @ORM\Column(type="string", length=128, nullable=true, name="first_name")
      * @Annotation\ErrorMessage("Please provide a first name")
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Laminas\Form\Element\Text")
      * @Annotation\Attributes({"data-ng-model":"user.firstName",  "ng-required" : "true"})
      * @Annotation\Options({"label":"First Name",
      * "autorender": {
@@ -33,7 +33,7 @@ abstract class AbstractUser extends Entity implements UserInterface
     /**
      * @ORM\Column(type="string", length=128, nullable=true, name="last_name")
      * @Annotation\ErrorMessage("Please provide a last name")
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Laminas\Form\Element\Text")
      * @Annotation\Attributes({"data-ng-model":"user.lastName",  "ng-required" : "true"})
      * @Annotation\Options({"label":"Last Name",
      * "autorender": {
@@ -48,7 +48,7 @@ abstract class AbstractUser extends Entity implements UserInterface
     /**
      * @ORM\Column(type="string", length=50, nullable=true, name="username")
      *
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Laminas\Form\Element\Text")
      * @Annotation\Attributes({"data-ng-model":"user.username",  "ng-required" : "true"})
      * @Annotation\Options({"label":"Username",
      * "autorender": {
@@ -56,12 +56,7 @@ abstract class AbstractUser extends Entity implements UserInterface
      *      }})
      * @Annotation\Required(true)
      *
-     * @Annotation\Validator({
-     *      "name": "NotEmpty",
-     *      "options": {
-     *          "messages" : { "isEmpty" : "Please provide a username"}
-     *      }
-     *  })
+     * @Annotation\Validator(name="NotEmpty", options={"messages": {"isEmpty": "Please provide a username"}})
      *
      * @var string
      */
@@ -88,7 +83,7 @@ abstract class AbstractUser extends Entity implements UserInterface
     /**
      * @ORM\Column(type="string", length=8, nullable=false, name="role")
      *
-     * @Annotation\Type("Zend\Form\Element\Hidden")
+     * @Annotation\Type("Laminas\Form\Element\Hidden")
      * @Annotation\Attributes({"required": true})
      * @Annotation\Options({
      *      "label" : "Role",
@@ -124,22 +119,17 @@ abstract class AbstractUser extends Entity implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=128);
-     * @Annotation\Type("Zend\Form\Element\Email")
+     * @Annotation\Type("Laminas\Form\Element\Email")
      *
      * @Annotation\Attributes({"data-ng-model":"user.email", "ng-required" : "true"})
      * @Annotation\Options({"label":"Email",
      * "autorender": {
      *          "ngModel": "email"
      *      }})
-     * @Annotation\Validator({"name": "EmailAddress", "options": {"messages": {Zend\Validator\EmailAddress::INVALID_FORMAT: "Please provide a valid email address."}}})
+     * @Annotation\Validator(name="EmailAddress", options={"messages": {Laminas\Validator\EmailAddress::INVALID_FORMAT: "Please provide a valid email address."}})
      * @Annotation\Required(true)
-     * @Annotation\Validator({
-     *      "name": "NotEmpty",
-     *      "options": {
-     *          "messages" : { "isEmpty" : "Please provide an email address"}
-     *          }
-     *      })
-     * @Annotation\Validator({"name": "EmailAddress"})
+     * @Annotation\Validator(name="NotEmpty", options={"messages": {"isEmpty": "Please provide an email address"}})
+     * @Annotation\Validator(name="EmailAddress")
      * @var string
      */
     protected $email;
@@ -148,7 +138,7 @@ abstract class AbstractUser extends Entity implements UserInterface
      *
      * @ORM\Column(type="string", length=8);
      * @Annotation\ErrorMessage("Invalid or unknown status")
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Type("Laminas\Form\Element\Radio")
      * @Annotation\Attributes({"required": true, "data-ng-disabled": "saving"})
      * @Annotation\Options({
      *      "label":"Status",
@@ -159,9 +149,9 @@ abstract class AbstractUser extends Entity implements UserInterface
      *      "autorender": {
      *          "ngModel": "state"
      *      }})
-     * @Annotation\Filter({"name": "StripTags"})
-     * @Annotation\Filter({"name": "StringTrim"})
-     * @Annotation\Validator({"name": "StringLength", "options": {"min": 1,"max": 8}})
+     * @Annotation\Filter(name="StripTags")
+     * @Annotation\Filter(name="StringTrim")
+     * @Annotation\Validator(name="StringLength", options={"min": 1, "max": 8})
      *
      * @var string
      */

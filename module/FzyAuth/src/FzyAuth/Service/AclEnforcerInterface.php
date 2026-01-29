@@ -1,8 +1,8 @@
 <?php
 namespace FzyAuth\Service;
 
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\ModelInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ModelInterface;
 
 interface AclEnforcerInterface
 {

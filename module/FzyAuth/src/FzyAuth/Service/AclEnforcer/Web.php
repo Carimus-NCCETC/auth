@@ -1,9 +1,9 @@
 <?php
 namespace FzyAuth\Service\AclEnforcer;
 
-use Zend\Http\PhpEnvironment\Response;
-use Zend\Mvc\MvcEvent;
-use ZfcUser\Controller\UserController;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\MvcEvent;
+use LmcUser\Controller\UserController;
 
 class Web extends Base
 {

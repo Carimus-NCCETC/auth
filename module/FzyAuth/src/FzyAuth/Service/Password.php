@@ -117,6 +117,6 @@ abstract class Password extends Base
      */
     public function getUserRepository()
     {
-        return $this->em()->getRepository($this->getConfig()->getWrapped('zfcuser')->get('user_entity_class'));
+        return $this->em()->getRepository($this->getConfig()->getWrapped('lmcuser')->get('user_entity_class'));
     }
 }

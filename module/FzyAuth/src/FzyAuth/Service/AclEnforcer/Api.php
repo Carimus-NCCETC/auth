@@ -1,8 +1,8 @@
 <?php
 namespace FzyAuth\Service\AclEnforcer;
 
-use Zend\Http\Response;
-use Zend\Mvc\MvcEvent;
+use Laminas\Http\Response;
+use Laminas\Mvc\MvcEvent;
 
 class Api extends Base
 {
@@ -42,7 +42,7 @@ class Api extends Base
 
     protected function setResponseContent(Response $response, array $data)
     {
-        if ($response instanceof \Zend\Http\PhpEnvironment\Response) {
+        if ($response instanceof \Laminas\Http\PhpEnvironment\Response) {
             $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
             $response->setContent(json_encode(array_merge(array(
                 'status' => $response->getStatusCode(),

@@ -2,8 +2,8 @@
 
 namespace FzyAuth\Form;
 
-use Zend\InputFilter\InputFilter;
-use ZfcUser\Options\AuthenticationOptionsInterface;
+use Laminas\InputFilter\InputFilter;
+use LmcUser\Options\AuthenticationOptionsInterface;
 
 class ChangePasswordFilter extends InputFilter
 {

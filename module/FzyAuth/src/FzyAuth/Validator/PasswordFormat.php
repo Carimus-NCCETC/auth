@@ -7,7 +7,7 @@
  */
 namespace FzyAuth\Validator;
 
-use Zend\Validator\AbstractValidator;
+use Laminas\Validator\AbstractValidator;
 
 class PasswordFormat extends AbstractValidator
 {
