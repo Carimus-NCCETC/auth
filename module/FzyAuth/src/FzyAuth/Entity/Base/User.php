@@ -7,8 +7,7 @@ use Laminas\Form\Annotation;
 
 /**
  *
- * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\MappedSuperclass
  *
  * @Annotation\Options({
  *      "autorender": {
