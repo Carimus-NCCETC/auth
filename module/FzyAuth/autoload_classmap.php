@@ -3,6 +3,7 @@
 return array(
     'FzyAuth\Module'                          => __DIR__ . '/Module.php',
     'FzyAuth\Controller\PasswordController'   => __DIR__ . '/src/FzyAuth/Controller/PasswordController.php',
+    'FzyAuth\Controller\PasswordControllerFactory' => __DIR__ . '/src/FzyAuth/Controller/PasswordControllerFactory.php',
     'FzyAuth\Entity\Base\AbstractUser'        => __DIR__ . '/src/FzyAuth/Entity/Base/AbstractUser.php',
     'FzyAuth\Entity\Base\User'                => __DIR__ . '/src/FzyAuth/Entity/Base/User.php',
     'FzyAuth\Entity\Base\UserInterface'       => __DIR__ . '/src/FzyAuth/Entity/Base/UserInterface.php',

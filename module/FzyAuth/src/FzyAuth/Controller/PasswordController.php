@@ -8,6 +8,8 @@ use Laminas\View\Model\ViewModel;
 use FzyCommon\Util\Params;
 use Laminas\Form\Form;
 use LmcUser\Controller\UserController;
+use FzyAuth\Service\Password\Forgot as ForgotService;
+use FzyAuth\Service\Password\Reset as ResetService;
 
 /**
  * Class PasswordController
@@ -15,15 +17,45 @@ use LmcUser\Controller\UserController;
  */
 class PasswordController extends AbstractController
 {
+    /**
+     * @var Form
+     */
+    protected $forgotPasswordForm;
+
+    /**
+     * @var Form
+     */
+    protected $changePasswordForm;
+
+    /**
+     * @var ForgotService
+     */
+    protected $forgotService;
+
+    /**
+     * @var ResetService
+     */
+    protected $resetService;
+
+    public function __construct(
+        Form $forgotPasswordForm,
+        Form $changePasswordForm,
+        ForgotService $forgotService,
+        ResetService $resetService
+    ) {
+        $this->forgotPasswordForm = $forgotPasswordForm;
+        $this->changePasswordForm = $changePasswordForm;
+        $this->forgotService = $forgotService;
+        $this->resetService = $resetService;
+    }
+
     public function indexAction()
     {
-        /* @var Form $form */
-        $form  = $this->getServiceLocator()->get('FzyAuth\Form\ForgotPassword');
-
         return new ViewModel(array(
-            'forgotForm' => $form,
+            'forgotForm' => $this->forgotPasswordForm,
         ));
     }
+
     /**
      * @return \Laminas\Http\Response|ViewModel
      */
@@ -31,8 +63,7 @@ class PasswordController extends AbstractController
     {
         $params = $this->getParamsFromRequest();
 
-        /* @var Form $form */
-        $form  = $this->getServiceLocator()->get('FzyAuth\Form\ForgotPassword');
+        $form = $this->forgotPasswordForm;
 
         $form->setData($params->getAll());
         $view = new ViewModel(array(
@@ -43,11 +74,9 @@ class PasswordController extends AbstractController
         if (!$form->isValid()) {
             return $view;
         }
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        /* @var $forgotService \FzyAuth\Service\Password\Forgot */
-        $forgotService = $this->getServiceLocator()->get('FzyAuth\Password\Forgot');
+
         try {
-            $forgotService->handle($forgotService->getUserByEmail($params->get('email')));
+            $this->forgotService->handle($this->forgotService->getUserByEmail($params->get('email')));
         } catch (NotSent $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
 
@@ -61,12 +90,12 @@ class PasswordController extends AbstractController
     }
 
     /**
-     * @param  Params                          $params
-     * @param  Form                            $form
-     * @param  \FzyAuth\Service\Password\Reset $reset
+     * @param  Params    $params
+     * @param  Form      $form
+     * @param  ResetService $reset
      * @return \Laminas\Http\Response|ViewModel
      */
-    protected function preReset(Params $params, Form $form, \FzyAuth\Service\Password\Reset $reset)
+    protected function preReset(Params $params, Form $form, ResetService $reset)
     {
         if (!trim($params->get('token')) || $reset->getUserByToken($params->get('token'))->isNull()) {
             return $this->redirect()->toRoute(UserController::ROUTE_LOGIN);
@@ -82,7 +111,11 @@ class PasswordController extends AbstractController
 
     public function resetAction()
     {
-        return $this->preReset($this->getParamsFromRequest(), $this->getServiceLocator()->get('FzyAuth\Form\ChangePassword'), $this->getServiceLocator()->get('FzyAuth\Password\Reset'));
+        return $this->preReset(
+            $this->getParamsFromRequest(),
+            $this->changePasswordForm,
+            $this->resetService
+        );
     }
 
     /**
@@ -91,11 +124,9 @@ class PasswordController extends AbstractController
     public function changeAction()
     {
         $params = $this->getParamsFromRequest();
-        /* @var Form $form */
-        $form  = $this->getServiceLocator()->get('FzyAuth\Form\ChangePassword');
-        /* @var $resetService \FzyAuth\Service\Password\Reset */
-        $resetService = $this->getServiceLocator()->get('FzyAuth\Password\Reset');
-        $view = $this->preReset($params, $form, $resetService);
+        $form = $this->changePasswordForm;
+        $view = $this->preReset($params, $form, $this->resetService);
+
         if (!$view instanceof ViewModel) {
             // redirect
             return $view;
@@ -106,7 +137,7 @@ class PasswordController extends AbstractController
         }
 
         try {
-            $resetService->handle($resetService->getUserByToken($params->get('token')), $params);
+            $this->resetService->handle($this->resetService->getUserByToken($params->get('token')), $params);
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
 

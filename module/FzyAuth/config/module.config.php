@@ -78,8 +78,8 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'FzyAuth\Controller\Password' => 'FzyAuth\Controller\PasswordController',
+        'factories' => array(
+            'FzyAuth\Controller\Password' => \FzyAuth\Controller\PasswordControllerFactory::class,
         ),
     ),
 	'service_manager' => array(
@@ -91,7 +91,16 @@ return array(
             'FzyAuth\Password\Forgot' => 'FzyAuth\Service\Password\Forgot',
             'FzyAuth\Password\Reset'  => 'FzyAuth\Service\Password\Reset',
         ),
-		'factories' => array(
+        'factories' => array(
+            'FzyAuth\Service\Password\Forgot' => function($container) {
+                $service = new \FzyAuth\Service\Password\Forgot($container);
+                return $service;
+            },
+            'FzyAuth\Service\Password\Reset' => function($container) {
+                $service = new \FzyAuth\Service\Password\Reset($container);
+                $service->setEventManager($container->get('EventManager'));
+                return $service;
+            },
             'FzyAuth\Config' => function($sm) {
                 /* @var $config \FzyCommon\Util\Params */
                 $config = $sm->get('FzyCommon\Config');
